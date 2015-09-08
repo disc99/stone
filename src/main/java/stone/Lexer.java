@@ -23,25 +23,29 @@ public class Lexer {
     }
 
     public Token read() throws ParseException {
-        if (fillQueue(0))
+        if (fillQueue(0)) {
             return queue.remove(0);
-        else
+        } else {
             return Token.EOF;
+        }
     }
 
     public Token peek(int i) throws ParseException {
-        if (fillQueue(i))
+        if (fillQueue(i)) {
             return queue.get(i);
-        else
+        } else {
             return Token.EOF;
+        }
     }
 
     private boolean fillQueue(int i) throws ParseException {
-        while (i >= queue.size())
-            if (hasMore)
+        while (i >= queue.size()) {
+            if (hasMore) {
                 readLine();
-            else
+            } else {
                 return false;
+            }
+        }
         return true;
     }
 
@@ -66,8 +70,9 @@ public class Lexer {
             if (matcher.lookingAt()) {
                 addToken(lineNo, matcher);
                 pos = matcher.end();
-            } else
+            } else {
                 throw new ParseException("bad token at line " + lineNo);
+            }
         }
         queue.add(new IdToken(lineNo, Token.EOL));
     }
@@ -77,12 +82,13 @@ public class Lexer {
         if (m != null) { // if not a space
             if (matcher.group(2) == null) { // if not a comment
                 Token token;
-                if (matcher.group(3) != null)
+                if (matcher.group(3) != null) {
                     token = new NumToken(lineNo, Integer.parseInt(m));
-                else if (matcher.group(4) != null)
+                } else if (matcher.group(4) != null) {
                     token = new StrToken(lineNo, toStringLiteral(m));
-                else
+                } else {
                     token = new IdToken(lineNo, m);
+                }
                 queue.add(token);
             }
         }
@@ -95,9 +101,9 @@ public class Lexer {
             char c = s.charAt(i);
             if (c == '\\' && i + 1 < len) {
                 int c2 = s.charAt(i + 1);
-                if (c2 == '"' || c2 == '\\')
+                if (c2 == '"' || c2 == '\\') {
                     c = s.charAt(++i);
-                else if (c2 == 'n') {
+                } else if (c2 == 'n') {
                     ++i;
                     c = '\n';
                 }
