@@ -2,3 +2,7 @@ build
 *.iml
 .gradle/
 .idea/
+/bin/
+.classpath
+.project
+.settings/
